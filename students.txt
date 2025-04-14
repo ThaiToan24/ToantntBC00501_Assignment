@@ -1,0 +1,4 @@
+01,Pham Hong Ngoc,SE07201,Fale,BIZ,9.00,Distinction
+02,Nguyen Hoang Nam,SE07201,Male,IT,8.50,Distinction
+03,Huynh Vi Khang,SE07201,Male,IT,9.00,Distinction
+04,Tran Minh Thanh,SE07201,Male,IT,7.50,Merit
