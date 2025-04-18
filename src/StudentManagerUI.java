@@ -28,7 +28,7 @@ public class StudentManagerUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(null);
-        System.out.println("Khởi tạo giao diện...");
+        System.out.println("Initialize interface...");
 
         // Khởi tạo danh sách môn học theo chuyên ngành
         subjectsMap.put("IT", new String[]{"Software Engineering", "Computer Science", "Computer Networks and Data Communications"});
@@ -152,7 +152,7 @@ public class StudentManagerUI extends JFrame {
 
         // Tải dữ liệu từ file
         loadStudentsFromFile();
-        System.out.println("Hoàn thành khởi tạo giao diện.");
+        System.out.println("Interface initialization complete.");
     }
 
     private void updateSubjectLabels() {
@@ -174,14 +174,14 @@ public class StudentManagerUI extends JFrame {
             String major = cbMajor.getSelectedItem().toString();
 
             if (id.isEmpty() || name.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Student ID và Name không được để trống.");
+                JOptionPane.showMessageDialog(this, "Student ID and Name cannot be left blank.");
                 return;
             }
 
             // Kiểm tra ID trùng
             for (int i = 0; i < tableModel.getRowCount(); i++) {
                 if (tableModel.getValueAt(i, 0).toString().equals(id)) {
-                    JOptionPane.showMessageDialog(this, "Student ID đã tồn tại.");
+                    JOptionPane.showMessageDialog(this, "Student ID already exists.");
                     return;
                 }
             }
@@ -191,7 +191,7 @@ public class StudentManagerUI extends JFrame {
             double s3 = txtSubject3.getText().trim().isEmpty() ? 0 : Double.parseDouble(txtSubject3.getText());
 
             if (s1 < 0 || s1 > 10 || s2 < 0 || s2 > 10 || s3 < 0 || s3 > 10) {
-                JOptionPane.showMessageDialog(this, "Điểm phải từ 0 đến 10.");
+                JOptionPane.showMessageDialog(this, "Score must be between 0 and 10.");
                 return;
             }
 
@@ -201,7 +201,7 @@ public class StudentManagerUI extends JFrame {
             tableModel.addRow(new Object[]{id, name, sClass, gender, major, String.format("%.2f", avg), rank});
             clearFields();
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập số hợp lệ cho các môn học.");
+            JOptionPane.showMessageDialog(this, "Please enter a valid number for the subjects.");
         }
     }
 
@@ -211,7 +211,7 @@ public class StudentManagerUI extends JFrame {
             tableModel.removeRow(row);
             clearFields();
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sinh viên để xóa.");
+            JOptionPane.showMessageDialog(this, "Please select a student to delete.");
         }
     }
 
@@ -226,7 +226,7 @@ public class StudentManagerUI extends JFrame {
                 String major = cbMajor.getSelectedItem().toString();
 
                 if (id.isEmpty() || name.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Student ID và Name không được để trống.");
+                    JOptionPane.showMessageDialog(this, "Student ID and Name cannot be left blank.");
                     return;
                 }
 
@@ -235,7 +235,7 @@ public class StudentManagerUI extends JFrame {
                 double s3 = txtSubject3.getText().trim().isEmpty() ? 0 : Double.parseDouble(txtSubject3.getText());
 
                 if (s1 < 0 || s1 > 10 || s2 < 0 || s2 > 10 || s3 < 0 || s3 > 10) {
-                    JOptionPane.showMessageDialog(this, "Điểm phải từ 0 đến 10.");
+                    JOptionPane.showMessageDialog(this, "Score must be between 0 and 10.");
                     return;
                 }
 
@@ -252,10 +252,10 @@ public class StudentManagerUI extends JFrame {
 
                 clearFields();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập số hợp lệ cho các môn học.");
+                JOptionPane.showMessageDialog(this, "Please enter a valid number for the subjects.");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sinh viên để cập nhật.");
+            JOptionPane.showMessageDialog(this, "Please select a student to update.");
         }
     }
 
@@ -313,7 +313,7 @@ public class StudentManagerUI extends JFrame {
 
     private void saveStudentsToList() {
         students.clear();
-        System.out.println("Bắt đầu lưu danh sách sinh viên...");
+        System.out.println("Start saving student list...");
 
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             try {
@@ -327,9 +327,9 @@ public class StudentManagerUI extends JFrame {
 
                 Student student = new Student(id, name, sClass, gender, major, avg, rank);
                 students.add(student);
-                System.out.println("Thêm sinh viên: " + student);
+                System.out.println("Add students: " + student);
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Lỗi: Dữ liệu điểm trung bình không hợp lệ ở dòng " + (i + 1));
+                JOptionPane.showMessageDialog(this, "Error: Invalid GPA data in row " + (i + 1));
                 return;
             }
         }
@@ -351,7 +351,7 @@ public class StudentManagerUI extends JFrame {
     private void loadStudentsFromFile() {
         students.clear();
         tableModel.setRowCount(0);
-        System.out.println("Bắt đầu tải dữ liệu từ " + DATA_FILE + "...");
+        System.out.println("Start downloading data from " + DATA_FILE + "...");
 
         try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
             String line;
@@ -370,17 +370,17 @@ public class StudentManagerUI extends JFrame {
                         Student student = new Student(id, name, sClass, gender, major, avg, rank);
                         students.add(student);
                         tableModel.addRow(new Object[]{id, name, sClass, gender, major, String.format("%.2f", avg), rank});
-                        System.out.println("Tải sinh viên: " + student);
+                        System.out.println("Download student: " + student);
                     } catch (NumberFormatException e) {
-                        System.out.println("Dữ liệu không hợp lệ trong file: " + line);
+                        System.out.println("Invalid data in file: " + line);
                     }
                 } else {
-                    System.out.println("Dòng không đúng định dạng: " + line);
+                    System.out.println("Invalid line format: " + line);
                 }
             }
-            System.out.println("Đã tải " + students.size() + " sinh viên từ " + DATA_FILE);
+            System.out.println("Loaded " + students.size() + " students from " + DATA_FILE);
         } catch (IOException e) {
-            System.out.println("Không tìm thấy hoặc không thể đọc file " + DATA_FILE + ": " + e.getMessage());
+            System.out.println("File not found or cannot be read " + DATA_FILE + ": " + e.getMessage());
         }
     }
 
