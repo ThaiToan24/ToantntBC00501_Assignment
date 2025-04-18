@@ -131,9 +131,9 @@ public class StudentManagerUI extends JFrame {
         btnUpdate.addActionListener(e -> updateStudent());
         btnSave.addActionListener(e -> saveStudentsToList());
 
-        btnSortByID.addActionListener(e -> sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(0, SortOrder.ASCENDING))));
-        btnSortByAvg.addActionListener(e -> sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(5, SortOrder.DESCENDING))));
-        btnSortByRank.addActionListener(e -> sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(6, SortOrder.ASCENDING))));
+        btnSortByID.addActionListener(e -> sortByID());
+        btnSortByAvg.addActionListener(e -> sortByAvg());
+        btnSortByRank.addActionListener(e -> sortByRank());
 
         txtSearch.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
@@ -261,7 +261,7 @@ public class StudentManagerUI extends JFrame {
 
     private void searchStudent(String keyword) {
         keyword = keyword.toLowerCase().trim();
-        sorter.setSortKeys(null); 
+        sorter.setSortKeys(null);
         if (keyword.isEmpty()) {
             table.clearSelection();
             return;
@@ -286,7 +286,7 @@ public class StudentManagerUI extends JFrame {
             txtClass.setText(tableModel.getValueAt(row, 2).toString());
             txtGender.setText(tableModel.getValueAt(row, 3).toString());
             cbMajor.setSelectedItem(tableModel.getValueAt(row, 4).toString());
-            
+
             txtSubject1.setText("");
             txtSubject2.setText("");
             txtSubject3.setText("");
@@ -309,6 +309,115 @@ public class StudentManagerUI extends JFrame {
         else if (avg >= 6.5) return "Merit";
         else if (avg >= 5.0) return "Pass";
         else return "Fail";
+    }
+
+    // Hàm sắp xếp theo ID sử dụng Bubble Sort
+    private void sortByID() {
+        ArrayList<Student> tempStudents = new ArrayList<>();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            String id = tableModel.getValueAt(i, 0).toString();
+            String name = tableModel.getValueAt(i, 1).toString();
+            String sClass = tableModel.getValueAt(i, 2).toString();
+            String gender = tableModel.getValueAt(i, 3).toString();
+            String major = tableModel.getValueAt(i, 4).toString();
+            double avg = Double.parseDouble(tableModel.getValueAt(i, 5).toString());
+            String rank = tableModel.getValueAt(i, 6).toString();
+            tempStudents.add(new Student(id, name, sClass, gender, major, avg, rank));
+        }
+
+        // Bubble Sort theo ID
+        for (int i = 0; i < tempStudents.size() - 1; i++) {
+            for (int j = 0; j < tempStudents.size() - i - 1; j++) {
+                if (tempStudents.get(j).id.compareTo(tempStudents.get(j + 1).id) > 0) {
+                    Student temp = tempStudents.get(j);
+                    tempStudents.set(j, tempStudents.get(j + 1));
+                    tempStudents.set(j + 1, temp);
+                }
+            }
+        }
+
+        // Cập nhật lại tableModel
+        tableModel.setRowCount(0);
+        for (Student s : tempStudents) {
+            tableModel.addRow(new Object[]{s.id, s.name, s.sClass, s.gender, s.major, String.format("%.2f", s.avg), s.rank});
+        }
+    }
+
+    // Hàm sắp xếp theo Avg sử dụng Bubble Sort
+    private void sortByAvg() {
+        ArrayList<Student> tempStudents = new ArrayList<>();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            String id = tableModel.getValueAt(i, 0).toString();
+            String name = tableModel.getValueAt(i, 1).toString();
+            String sClass = tableModel.getValueAt(i, 2).toString();
+            String gender = tableModel.getValueAt(i, 3).toString();
+            String major = tableModel.getValueAt(i, 4).toString();
+            double avg = Double.parseDouble(tableModel.getValueAt(i, 5).toString());
+            String rank = tableModel.getValueAt(i, 6).toString();
+            tempStudents.add(new Student(id, name, sClass, gender, major, avg, rank));
+        }
+
+        // Bubble Sort theo Avg (giảm dần)
+        for (int i = 0; i < tempStudents.size() - 1; i++) {
+            for (int j = 0; j < tempStudents.size() - i - 1; j++) {
+                if (tempStudents.get(j).avg < tempStudents.get(j + 1).avg) {
+                    Student temp = tempStudents.get(j);
+                    tempStudents.set(j, tempStudents.get(j + 1));
+                    tempStudents.set(j + 1, temp);
+                }
+            }
+        }
+
+        // Cập nhật lại tableModel
+        tableModel.setRowCount(0);
+        for (Student s : tempStudents) {
+            tableModel.addRow(new Object[]{s.id, s.name, s.sClass, s.gender, s.major, String.format("%.2f", s.avg), s.rank});
+        }
+    }
+
+    // Hàm sắp xếp theo Rank sử dụng Bubble Sort
+    private void sortByRank() {
+        ArrayList<Student> tempStudents = new ArrayList<>();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            String id = tableModel.getValueAt(i, 0).toString();
+            String name = tableModel.getValueAt(i, 1).toString();
+            String sClass = tableModel.getValueAt(i, 2).toString();
+            String gender = tableModel.getValueAt(i, 3).toString();
+            String major = tableModel.getValueAt(i, 4).toString();
+            double avg = Double.parseDouble(tableModel.getValueAt(i, 5).toString());
+            String rank = tableModel.getValueAt(i, 6).toString();
+            tempStudents.add(new Student(id, name, sClass, gender, major, avg, rank));
+        }
+
+        // Bubble Sort theo Rank
+        for (int i = 0; i < tempStudents.size() - 1; i++) {
+            for (int j = 0; j < tempStudents.size() - i - 1; j++) {
+                int rank1 = getRankValue(tempStudents.get(j).rank);
+                int rank2 = getRankValue(tempStudents.get(j + 1).rank);
+                if (rank1 > rank2) {
+                    Student temp = tempStudents.get(j);
+                    tempStudents.set(j, tempStudents.get(j + 1));
+                    tempStudents.set(j + 1, temp);
+                }
+            }
+        }
+
+        // Cập nhật lại tableModel
+        tableModel.setRowCount(0);
+        for (Student s : tempStudents) {
+            tableModel.addRow(new Object[]{s.id, s.name, s.sClass, s.gender, s.major, String.format("%.2f", s.avg), s.rank});
+        }
+    }
+
+    // Hàm hỗ trợ để gán giá trị số cho Rank
+    private int getRankValue(String rank) {
+        switch (rank) {
+            case "Distinction": return 1;
+            case "Merit": return 2;
+            case "Pass": return 3;
+            case "Fail": return 4;
+            default: return 5;
+        }
     }
 
     private void saveStudentsToList() {
@@ -334,7 +443,6 @@ public class StudentManagerUI extends JFrame {
             }
         }
 
-       
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
             for (Student s : students) {
                 writer.write(String.format("%s,%s,%s,%s,%s,%.2f,%s%n",
@@ -356,7 +464,7 @@ public class StudentManagerUI extends JFrame {
         try (BufferedReader reader = new BufferedReader(new FileReader(DATA_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",", -1); 
+                String[] parts = line.split(",", -1);
                 if (parts.length == 7) {
                     try {
                         String id = parts[0];

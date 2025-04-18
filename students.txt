@@ -4,4 +4,4 @@
 04,Tran Minh Thanh,SE07201,Male,IT,7.50,Merit
 05,Tran Gia Vi,SE08301,Male,IT,6.00,Pass
 06,Nguyen Thi Quynh Nga,SE08301,Fale,BIZ,6.67,Merit
-07,Pham Gia Khiem,SE08301,Fale,BIZ,3.67,Fail
+07,Pham Gia Khiem,SE08301,Fale,BIZ,3.33,Fail
